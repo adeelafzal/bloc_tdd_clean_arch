@@ -1,11 +1,13 @@
+import 'package:bloc_tdd_clean_arch/features/articles/presentation/bloc/article_bloc.dart';
 import 'package:bloc_tdd_clean_arch/features/authentication/presentation/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddUserDialog extends StatelessWidget {
-  final TextEditingController name;
+  final TextEditingController title;
+  final TextEditingController desc;
 
-  const AddUserDialog({super.key, required this.name});
+  const AddUserDialog({super.key, required this.title, required this.desc});
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +22,21 @@ class AddUserDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                decoration: const InputDecoration(labelText: "Name"),
-                controller: name,
+                decoration: const InputDecoration(labelText: "Title"),
+                controller: title,
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                decoration: const InputDecoration(labelText: "Description"),
+                controller: desc,
               ),
               ElevatedButton(
                   onPressed: () {
-                    context.read<AuthCubit>().createUsersEvent(
-                        createdAt: DateTime.now().toString(),
-                        name: name.text,
-                        avatar:
-                            "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/171.jpg");
+                    context.read<ArticleBloc>().add(
+                        UpdateArticleEvent(id:"1",title: title.text, desc: desc.text));
                     Navigator.pop(context);
                   },
-                  child: Text("Create user"))
+                  child: const Text("Create user"))
             ],
           ),
         ),

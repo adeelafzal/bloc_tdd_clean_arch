@@ -1,4 +1,5 @@
 import 'package:bloc_tdd_clean_arch/core/services/injection_container.dart';
+import 'package:bloc_tdd_clean_arch/features/articles/presentation/bloc/article_bloc.dart';
 import 'package:bloc_tdd_clean_arch/features/authentication/presentation/cubit/auth_cubit.dart';
 import 'package:bloc_tdd_clean_arch/features/authentication/presentation/views/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<AuthCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => sl<AuthCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<ArticleBloc>(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
